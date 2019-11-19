@@ -1,0 +1,6 @@
+*.ipynb_checkpoints
+*.ipynb
+*.tar
+__pycache__
+*.npz
+*.log
