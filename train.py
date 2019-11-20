@@ -1,23 +1,18 @@
-import sys
-import argparse
-
+from libs.utils import options, rand_num, config
 
 def main():
-    ##import libs
+    ##1. import libs ok
+    ##2. get args ok
+    ###2.1 get config
+    ###2.2 modify config
+    ##3. dataset
+    ##4. models
+    ##5. do the thing
+    ##log things
     
-    #first, read the default.yaml or the user specific config file
-    #then, modify the yaml with user-added options
-    parser = argparse.ArgumentParser(description='Training phase for edge detection.', fromfile_prefix_chars='@')
-    parser.add_argument('--config_file', '--config', nargs=1, default='configs/default.yaml', type=str, help='config .yaml file.')
-    parser.add_argument('opt', nargs='*', type=str, help='user specific config.')
-    if len(sys.argv) == 1:
-        parser.print_help()
-        sys.exit(1)
-    args = parser.parse_args()
-    #if args.config_file is not None:
-        #get_config_file(args.config)
-    #if args.opt is not None:
-        #get_config_from_list(args.opt)
+    args = options().parse() #get arguments from the command line
+    config(args).get_config() #get configurations from both .yaml file and user-specfic.
+    rand_num(0).set_seed()
 
 if __name__ == '__main__':
     main()

@@ -1,0 +1,23 @@
+dataset: urisc-complex
+datadir: /home/yuqi_huo/data/urisc/
+
+num_gpus: 2
+
+model:
+    num_classes: 2
+    model_name: dff
+    bn_momentum: 0.9
+    bn_epsilon: 1.0000001e-5
+
+train:
+    data_type: train
+    batch_size: 16
+
+    crop_size: 224
+    dataset_size: 20
+
+test:
+    data_type: val
+    batch_size: 16
+    drop_size: 256
+    scale: 256
