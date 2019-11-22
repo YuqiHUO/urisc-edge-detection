@@ -65,9 +65,6 @@ class config():
             cfg[subkey] = val
             #self.config_file = cfg
     
-    def get_prefix_name(self):
-        return self.config_file.prefix_name
-    
     def print(self, log):
         log.logger.info('Config:')
         log.logger.info(pprint.pformat(self.config_file))
