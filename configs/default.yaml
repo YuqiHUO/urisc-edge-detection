@@ -1,23 +1,41 @@
+prefix_name: train_with_no_augment
 dataset: urisc-complex
 datadir: /home/yuqi_huo/data/urisc/
 
 num_gpus: 2
+seed: 0
+log_root: log
 
 model:
     num_classes: 2
     model_name: dff
+    backbone: resnet50
     bn_momentum: 0.9
     bn_epsilon: 1.0000001e-5
 
+optimizer:
+    lr: 0.01
+    lr_scheduler: poly
+    lr_step: 20
+    momentum: 0.9
+    weight_decay: 1.01e-4
+
 train:
     data_type: train
+    epochs: 100
+    start_epoch: 100
     batch_size: 16
-
-    crop_size: 224
-    dataset_size: 20
+    worker: 16
+    base_size: 512
+    crop_size: 512
+    data_list: lala.txt
 
 test:
     data_type: val
+    test_iter: 1
     batch_size: 16
-    drop_size: 256
-    scale: 256
+    worker: 16
+    base_size: 512
+    crop_size: 512
+    scale: True
+    data_list: lala.txt

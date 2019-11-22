@@ -1,7 +1,13 @@
-import sys
+import sys, os
 import argparse
 import yaml
 from easydict import EasyDict as edict
+from ast import literal_eval
+import pprint
+
+from datetime import datetime
+import logging
+from logging import handlers
 
 import random
 import numpy as np
@@ -50,16 +56,40 @@ class config():
                 cfg = cfg[subkey]
             subkey = key_list[-1]
             assert subkey in cfg, 'Config key {} not found'.format(subkey)
-            
             try:
                 # Handle the case when v is a string literal.
                 val = literal_eval(value)
             except BaseException:
                 val = value
-            assert isinstance(val, type(cfg[subkey])) or cfg[subkey] is None, \
-                'type {} does not match original type {}'.format(
-                    type(val), type(cfg[subkey]))
+            assert isinstance(val, type(cfg[subkey])) or cfg[subkey] is None, 'type {} does not match original type {}'.format(type(val), type(cfg[subkey]))
             cfg[subkey] = val
+            #self.config_file = cfg
+    
+    def get_prefix_name(self):
+        return self.config_file.prefix_name
+    
+    def print(self, log):
+        log.logger.info('Config:')
+        log.logger.info(pprint.pformat(self.config_file))
+
+class my_log():
+    def __init__(self, prefix_name):
+        TIMESTAMP = "{0:_%m_%d_%H_%M}".format(datetime.now())
+        if prefix_name:
+            TIMESTAMP = prefix_name + TIMESTAMP
+        log_dir = os.path.join('results', TIMESTAMP)
+        log_name = os.path.join(log_dir, TIMESTAMP + '.log')
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.INFO)
+        self.logger.addHandler(logging.StreamHandler())
+        self.logger.addHandler(handlers.TimedRotatingFileHandler(filename=log_name))
+        
+
+    def info(information):
+        self.logger.info(informaiton)
 
 
 class rand_num():
