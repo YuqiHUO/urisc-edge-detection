@@ -88,7 +88,6 @@ class my_log():
     def info(information):
         self.logger.info(informaiton)
 
-
 class rand_num():
     def __init__(self, seed):
         self.seed = seed

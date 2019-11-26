@@ -1,5 +1,5 @@
 prefix_name: train_with_no_augment
-dataset: urisc-complex
+dataset: urisc
 datadir: /home/yuqi_huo/data/urisc/
 
 num_gpus: 2
@@ -28,7 +28,17 @@ train:
     worker: 16
     base_size: 512
     crop_size: 512
-    data_list: lala.txt
+    data_list: urisc_train_list.txt
+
+val:
+    data_type: val
+    epochs: 100
+    start_epoch: 100
+    batch_size: 16
+    worker: 16
+    base_size: 512
+    crop_size: 512
+    data_list: urisc_val_list.txt
 
 test:
     data_type: val
@@ -38,4 +48,4 @@ test:
     base_size: 512
     crop_size: 512
     scale: True
-    data_list: lala.txt
+    data_list: urisc_test_list.txt
