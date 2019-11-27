@@ -85,8 +85,8 @@ class my_log():
         self.logger.addHandler(handlers.TimedRotatingFileHandler(filename=log_name))
         
 
-    def info(information):
-        self.logger.info(informaiton)
+    def info(self, information):
+        self.logger.info(information)
 
 class rand_num():
     def __init__(self, seed):

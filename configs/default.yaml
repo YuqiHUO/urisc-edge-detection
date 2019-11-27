@@ -24,7 +24,7 @@ train:
     epochs: 100
     start_epoch: 100
     batch_size: 16
-    worker: 16
+    worker: 4
     scale: [0.5, 2.0]
     crop_size: 1024
     data_list: urisc_train_list.txt
@@ -32,12 +32,12 @@ train:
 val:
     val_iter: 1
     batch_size: 16
-    worker: 16
+    worker: 4
     crop_size: 1024
     data_list: urisc_val_list.txt
 
 test:
     batch_size: 16
-    worker: 16
+    worker: 4
     crop_size: 1024
     data_list: urisc_test_list.txt

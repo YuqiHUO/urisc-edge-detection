@@ -15,7 +15,6 @@ class UriscEdgeDetection(data.Dataset):
         self._input_mean = torch.from_numpy(np.array([0.51430742, 0.51430742, 0.51430742]).reshape((1, 3, 1, 1))).float()
         self._input_std = torch.from_numpy(np.array([0.18548921, 0.18548921, 0.18548921]).reshape((1, 3, 1, 1))).float()
         self._get_data_list()
-        self.__getitem__(0)
 
     def _get_data_list(self):
         self.image_list = []
@@ -27,14 +26,12 @@ class UriscEdgeDetection(data.Dataset):
                 target = line.strip().split()[1]
                 image_info['target'] = target
             self.image_list.append(image_info)
-        self.log.logger.info('{} file loaded in {} mode.'.format(len(self.image_list), self.mode))
+        self.log.info('{} file loaded in {} mode.'.format(len(self.image_list), self.mode))
 
     def __getitem__(self, index):
         _image = random.choice(self.image_list) if self.mode == 'train' else self.image_list[index]
         input_img = _image['input']
         target = _image['target'] if 'target' in _image else None
-        self.log.logger.info(input_img)
-        self.log.logger.info(target)
         
         input_img = os.path.join(self.args.datadir, input_img)
         target = os.path.join(self.args.datadir, target) if target else None
@@ -61,10 +58,15 @@ class UriscEdgeDetection(data.Dataset):
         input_img = torch.from_numpy(input_img).permute(3, 2, 0, 1)#[1/4, C, H, W]
         input_img = input_img.float() / 255
         input_img = (input_img - self._input_mean) / self._input_std
-        self.log.logger.info(input_img.shape)
+        # self.log.info(input_img.shape)
+        # if target is not None:
+        #     self.log.info(target.shape)
+        
+        item_pack={'input_img': input_img}
         if target is not None:
-            self.log.logger.info(target.shape)
-        return input, target
+            item_pack['target'] = target
+
+        return item_pack
     
     def __len__(self):
         return len(self.image_list)
@@ -105,10 +107,15 @@ class UriscEdgeDetection(data.Dataset):
                 mask_2 = mask[1024:, :1024, :]
                 mask_3 = mask[1024:, 1024:, :]
                 mask = np.concatenate((mask_0, mask_1, mask_2, mask_3), axis=3)
+            else:
+                mask = np.concatenate((mask, mask, mask, mask), axis=3)
         if img.shape[0] > self.crop_size:
             img_0 = img[:1024, :1024, :]
             img_1 = img[:1024, 1024:, :]
             img_2 = img[1024:, :1024, :]
             img_3 = img[1024:, 1024:, :]
             img = np.concatenate((img_0, img_1, img_2, img_3), axis=3)
+        else:
+            img = np.concatenate((img, img, img, img), axis=3)
+
         return img, mask
