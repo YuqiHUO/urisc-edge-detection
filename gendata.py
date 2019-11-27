@@ -22,8 +22,18 @@ def get_datalist():
                 tmp_path_l = tmp_path.replace('train', 'labels')
                 print(tmp_path, tmp_path_l, file=ftr)
             
-        
 
+def calculate():
+    step = 0
+    sum1 = np.array([0, 0, 0]).astype(np.float64)
+    sum2 = np.array([0, 0, 0]).astype(np.float64)
+    
+    for i in tqdm(open('filelist.txt').readlines()):
+        a = np.array(Image.open(os.path.join('/home/yuqi_huo/data/urisc/', i.strip())))
+        sum1 += np.mean(a, (0, 1))/255
+        sum2 += np.std(a, (0, 1))/255
+        step +=1
+    print(sum1, sum2, step, sum1 / step, sum2 / step)
 
 def generate_data():
     f = open('filelist.txt')
@@ -72,4 +82,6 @@ def generate_data():
             continue
         #_ = input('')
 
-generate_data()
+#generate_data()
+#get_datalist()
+calculate()
